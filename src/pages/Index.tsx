@@ -4,257 +4,355 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Slider } from '@/components/ui/slider';
 import Icon from '@/components/ui/icon';
 
 const Index = () => {
-  const [activeSection, setActiveSection] = useState('home');
-  const [area, setArea] = useState([50]);
-  const [serviceType, setServiceType] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    area: '',
+    message: '',
+  });
 
   const scrollToSection = (sectionId: string) => {
-    setActiveSection(sectionId);
     const element = document.getElementById(sectionId);
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const calculatePrice = () => {
-    const basePrice = serviceType === 'premium' ? 15000 : serviceType === 'standard' ? 10000 : 5000;
-    return basePrice * area[0];
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert('Спасибо! Мы свяжемся с вами в ближайшее время.');
   };
 
   const services = [
     {
-      icon: 'Paintbrush',
-      title: 'Малярные работы',
-      description: 'Профессиональная покраска стен и потолков с идеальным результатом',
-    },
-    {
-      icon: 'Layers',
-      title: 'Укладка плитки',
-      description: 'Облицовка любой сложности: ванные комнаты, кухни, полы',
-    },
-    {
-      icon: 'Home',
-      title: 'Ремонт под ключ',
-      description: 'Полный цикл работ от демонтажа до финишной отделки',
+      icon: 'Sparkles',
+      title: 'Дизайн-проект',
+      description: 'Разработка индивидуального дизайна с визуализацией и полным комплектом документации',
+      price: 'от 1 500 ₽/м²',
     },
     {
       icon: 'Hammer',
+      title: 'Ремонт под ключ',
+      description: 'Полный цикл работ от демонтажа до финишной отделки с гарантией качества',
+      price: 'от 8 000 ₽/м²',
+    },
+    {
+      icon: 'Layers',
       title: 'Черновая отделка',
-      description: 'Выравнивание стен, стяжка пола, подготовка помещений',
+      description: 'Выравнивание стен и потолков, стяжка пола, подготовка коммуникаций',
+      price: 'от 5 000 ₽/м²',
     },
     {
-      icon: 'Sparkles',
-      title: 'Дизайнерский ремонт',
-      description: 'Премиум отделка с эксклюзивными материалами',
+      icon: 'Paintbrush',
+      title: 'Чистовая отделка',
+      description: 'Покраска, обои, напольные покрытия, установка дверей и сантехники',
+      price: 'от 6 500 ₽/м²',
     },
     {
-      icon: 'Wrench',
-      title: 'Электромонтаж',
-      description: 'Установка электрики, освещения, умного дома',
+      icon: 'Building2',
+      title: 'Комплектация',
+      description: 'Подбор и закупка материалов, мебели и техники с оптовыми скидками',
+      price: 'скидка до 20%',
+    },
+    {
+      icon: 'ClipboardCheck',
+      title: 'Авторский надзор',
+      description: 'Контроль качества работ и соответствия дизайн-проекту на всех этапах',
+      price: 'от 50 000 ₽/мес',
+    },
+  ];
+
+  const advantages = [
+    {
+      number: '01',
+      title: 'Всё под ключ',
+      description: 'От дизайна до финального декора. Вы не будете бегать по подрядчикам — мы берём всё на себя',
+    },
+    {
+      number: '02',
+      title: 'Точные сроки',
+      description: 'Фиксируем сроки в договоре. Платим неустойку за каждый день просрочки',
+    },
+    {
+      number: '03',
+      title: 'Прозрачная смета',
+      description: 'Никаких скрытых платежей. Стоимость фиксируется до начала работ',
+    },
+    {
+      number: '04',
+      title: 'Гарантия 3 года',
+      description: 'Даём расширенную гарантию на все виды работ и материалов',
     },
   ];
 
   const portfolio = [
     {
-      title: 'Квартира 85 м²',
-      category: 'Премиум ремонт',
-      description: 'ЖК "Новая Москва"',
+      area: '120 м²',
+      type: 'Квартира',
+      style: 'Современный минимализм',
+      location: 'ЖК "Символ"',
     },
     {
-      title: 'Офис 120 м²',
-      category: 'Коммерческий',
-      description: 'Бизнес-центр "Столица"',
+      area: '85 м²',
+      type: 'Квартира',
+      style: 'Неоклассика',
+      location: 'ЖК "Город Набережных"',
     },
     {
-      title: 'Квартира 65 м²',
-      category: 'Чистовая отделка',
-      description: 'ЖК "Семейный"',
+      area: '200 м²',
+      type: 'Дом',
+      style: 'Скандинавский',
+      location: 'КП "Новорижский"',
     },
     {
-      title: 'Таунхаус 180 м²',
-      category: 'Премиум ремонт',
-      description: 'КП "Зеленая долина"',
+      area: '150 м²',
+      type: 'Офис',
+      style: 'Лофт',
+      location: 'БЦ "Омега Плаза"',
     },
   ];
 
-  const team = [
+  const stages = [
     {
-      name: 'Михаил Воронов',
-      role: 'Главный инженер',
-      experience: '15 лет опыта',
+      number: '01',
+      title: 'Заявка и замер',
+      description: 'Оставляете заявку, мы выезжаем на объект для замеров и консультации',
+      duration: '1 день',
     },
     {
-      name: 'Андрей Соколов',
-      role: 'Дизайнер интерьеров',
-      experience: '10 лет опыта',
+      number: '02',
+      title: 'Дизайн-проект',
+      description: 'Разрабатываем индивидуальный дизайн с 3D визуализацией',
+      duration: '14-30 дней',
     },
     {
-      name: 'Дмитрий Петров',
-      role: 'Мастер отделочных работ',
-      experience: '12 лет опыта',
+      number: '03',
+      title: 'Смета и договор',
+      description: 'Формируем прозрачную смету, подписываем договор с фиксацией цены',
+      duration: '1-2 дня',
     },
     {
-      name: 'Елена Кузнецова',
-      role: 'Менеджер проектов',
-      experience: '8 лет опыта',
+      number: '04',
+      title: 'Ремонт',
+      description: 'Выполняем все работы под контролем прораба и дизайнера',
+      duration: '30-90 дней',
+    },
+    {
+      number: '05',
+      title: 'Комплектация',
+      description: 'Подбираем и закупаем мебель, технику, декор со скидками',
+      duration: '7-14 дней',
+    },
+    {
+      number: '06',
+      title: 'Сдача объекта',
+      description: 'Проверяем качество, устраняем недочёты, передаём ключи',
+      duration: '1-3 дня',
     },
   ];
 
   const reviews = [
     {
-      name: 'Анна Смирнова',
+      name: 'Екатерина Смирнова',
+      project: 'Квартира 95 м²',
       rating: 5,
-      text: 'Отличная работа! Сделали ремонт в квартире за 2 месяца. Качество на высоте, все по договору.',
+      text: 'Делали ремонт в новостройке. Очень довольны результатом! Дизайнеры учли все наши пожелания, работы выполнены качественно и точно в срок. Рекомендуем!',
+      date: 'Ноябрь 2024',
     },
     {
-      name: 'Игорь Волков',
+      name: 'Дмитрий Волков',
+      project: 'Офис 180 м²',
       rating: 5,
-      text: 'Профессиональная команда. Особенно порадовало внимание к деталям и чистота на объекте.',
+      text: 'Профессиональная команда. Сделали ремонт офиса под ключ за 2 месяца. Смета не изменилась, качество отличное. Будем обращаться ещё.',
+      date: 'Октябрь 2024',
     },
     {
-      name: 'Мария Новикова',
+      name: 'Анна Петрова',
+      project: 'Квартира 65 м²',
       rating: 5,
-      text: 'Делали ремонт офиса. Уложились в сроки, результат превзошел ожидания. Рекомендую!',
+      text: 'Спасибо за красивый ремонт! Особенно понравилось, что не нужно было ни о чём думать — всё организовали сами. От дизайна до последней лампочки.',
+      date: 'Сентябрь 2024',
     },
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="fixed top-0 left-0 right-0 z-50 bg-primary text-primary-foreground shadow-lg">
+    <div className="min-h-screen bg-white">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
         <nav className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Icon name="Home" size={28} className="text-accent" />
-              <span className="text-2xl font-montserrat font-bold">МВ-Ремонт</span>
+              <div className="text-2xl font-montserrat font-bold text-primary">МВ ГРУПП</div>
             </div>
-            <div className="hidden md:flex items-center gap-6">
-              {[
-                { id: 'home', label: 'Главная' },
-                { id: 'services', label: 'Услуги' },
-                { id: 'portfolio', label: 'Портфолио' },
-                { id: 'team', label: 'О команде' },
-                { id: 'reviews', label: 'Отзывы' },
-                { id: 'calculator', label: 'Калькулятор' },
-                { id: 'contacts', label: 'Контакты' },
-              ].map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`font-medium transition-colors hover:text-accent ${
-                    activeSection === item.id ? 'text-accent' : ''
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
+            <div className="hidden lg:flex items-center gap-8">
+              <button onClick={() => scrollToSection('services')} className="text-sm font-medium hover:text-secondary transition-colors">
+                Услуги
+              </button>
+              <button onClick={() => scrollToSection('portfolio')} className="text-sm font-medium hover:text-secondary transition-colors">
+                Портфолио
+              </button>
+              <button onClick={() => scrollToSection('stages')} className="text-sm font-medium hover:text-secondary transition-colors">
+                Этапы работы
+              </button>
+              <button onClick={() => scrollToSection('reviews')} className="text-sm font-medium hover:text-secondary transition-colors">
+                Отзывы
+              </button>
+              <button onClick={() => scrollToSection('contacts')} className="text-sm font-medium hover:text-secondary transition-colors">
+                Контакты
+              </button>
             </div>
-            <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">
-              <Icon name="Phone" size={18} className="mr-2" />
-              Позвонить
+            <Button onClick={() => scrollToSection('contacts')} className="bg-secondary hover:bg-secondary/90">
+              <Icon name="Phone" size={16} className="mr-2" />
+              Заказать звонок
             </Button>
           </div>
         </nav>
       </header>
 
-      <main className="pt-20">
-        <section id="home" className="relative min-h-screen flex items-center bg-gradient-to-br from-primary via-primary/95 to-secondary/20">
-          <div className="container mx-auto px-4 py-20">
-            <div className="max-w-4xl animate-fade-in">
-              <h1 className="text-6xl md:text-7xl font-montserrat font-bold text-white mb-6 text-balance">
-                Премиум отделка
+      <main className="pt-16">
+        <section className="relative min-h-screen flex items-center bg-gradient-to-br from-gray-50 to-white">
+          <div className="container mx-auto px-4 py-32">
+            <div className="max-w-5xl">
+              <div className="inline-block mb-6 px-4 py-2 bg-secondary/10 text-secondary rounded-full text-sm font-medium">
+                Полный цикл отделочных работ
+              </div>
+              <h1 className="text-6xl md:text-7xl lg:text-8xl font-montserrat font-bold text-primary mb-8 leading-tight">
+                Ремонт и дизайн
                 <br />
-                <span className="text-accent">полного цикла</span>
+                <span className="text-secondary">под ключ</span>
               </h1>
-              <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl">
-                Превращаем пространства в произведения искусства. Гарантия качества, точные сроки, прозрачные цены.
+              <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl leading-relaxed">
+                Вы не будете бегать по подрядчикам, следить за рабочими и тратить время на согласования. 
+                <span className="font-semibold text-primary"> Мы берём ВСЁ на себя:</span> проект, ремонт, комплектацию.
               </p>
-              <div className="flex flex-wrap gap-4">
-                <Button
-                  size="lg"
-                  className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-8 py-6"
-                  onClick={() => scrollToSection('calculator')}
+              <div className="flex flex-wrap gap-4 mb-20">
+                <Button 
+                  size="lg" 
+                  className="bg-secondary hover:bg-secondary/90 text-lg px-8 h-14"
+                  onClick={() => scrollToSection('contacts')}
                 >
                   Рассчитать стоимость
-                  <Icon name="Calculator" size={20} className="ml-2" />
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="bg-white/10 border-white/30 text-white hover:bg-white/20 text-lg px-8 py-6 backdrop-blur-sm"
-                  onClick={() => scrollToSection('portfolio')}
-                >
-                  Портфолио работ
                   <Icon name="ArrowRight" size={20} className="ml-2" />
                 </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  className="text-lg px-8 h-14 border-2"
+                  onClick={() => scrollToSection('portfolio')}
+                >
+                  Смотреть портфолио
+                </Button>
               </div>
-              <div className="grid grid-cols-3 gap-8 mt-16 max-w-2xl">
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-accent mb-2">500+</div>
-                  <div className="text-white/80">Проектов</div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl">
+                <div>
+                  <div className="text-5xl font-bold text-secondary mb-2">500+</div>
+                  <div className="text-muted-foreground">Реализованных проектов</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-accent mb-2">12</div>
-                  <div className="text-white/80">Лет опыта</div>
+                <div>
+                  <div className="text-5xl font-bold text-secondary mb-2">12</div>
+                  <div className="text-muted-foreground">Лет на рынке</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-accent mb-2">98%</div>
-                  <div className="text-white/80">Довольных клиентов</div>
+                <div>
+                  <div className="text-5xl font-bold text-secondary mb-2">98%</div>
+                  <div className="text-muted-foreground">Довольных клиентов</div>
+                </div>
+                <div>
+                  <div className="text-5xl font-bold text-secondary mb-2">3 года</div>
+                  <div className="text-muted-foreground">Гарантия на работы</div>
                 </div>
               </div>
             </div>
           </div>
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+            <Icon name="ChevronDown" size={32} className="text-secondary" />
+          </div>
         </section>
 
-        <section id="services" className="py-24 bg-white">
+        <section id="services" className="py-32 bg-white">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-16 animate-fade-in">
-              <h2 className="text-5xl font-montserrat font-bold text-primary mb-4">Наши услуги</h2>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Полный спектр отделочных работ любой сложности
+            <div className="max-w-3xl mb-20">
+              <h2 className="text-5xl md:text-6xl font-montserrat font-bold text-primary mb-6">
+                Наши услуги
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Полный комплекс услуг для создания интерьера вашей мечты — от идеи до реализации
               </p>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {services.map((service, index) => (
-                <Card
-                  key={index}
-                  className="p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-secondary animate-scale-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
+                <Card 
+                  key={index} 
+                  className="group p-8 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-2 hover:border-secondary/20 bg-white"
                 >
-                  <div className="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center mb-6">
+                  <div className="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-secondary/20 transition-colors">
                     <Icon name={service.icon} size={32} className="text-secondary" />
                   </div>
                   <h3 className="text-2xl font-montserrat font-bold text-primary mb-3">{service.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{service.description}</p>
+                  <p className="text-muted-foreground mb-6 leading-relaxed">{service.description}</p>
+                  <div className="text-lg font-bold text-secondary">{service.price}</div>
                 </Card>
               ))}
             </div>
           </div>
         </section>
 
-        <section id="portfolio" className="py-24 bg-muted/30">
+        <section className="py-32 bg-primary text-white">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-5xl font-montserrat font-bold text-primary mb-4">Портфолио работ</h2>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Примеры наших реализованных проектов
+            <div className="max-w-3xl mb-20">
+              <h2 className="text-5xl md:text-6xl font-montserrat font-bold mb-6">
+                Почему выбирают нас
+              </h2>
+              <p className="text-xl text-white/80">
+                Мы делаем всё, чтобы процесс ремонта был комфортным, а результат — превосходил ожидания
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8">
+              {advantages.map((advantage, index) => (
+                <div key={index} className="flex gap-6">
+                  <div className="text-6xl font-montserrat font-bold text-secondary/30 flex-shrink-0">
+                    {advantage.number}
+                  </div>
+                  <div>
+                    <h3 className="text-3xl font-montserrat font-bold mb-4">{advantage.title}</h3>
+                    <p className="text-xl text-white/80 leading-relaxed">{advantage.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="portfolio" className="py-32 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mb-20">
+              <h2 className="text-5xl md:text-6xl font-montserrat font-bold text-primary mb-6">
+                Наши проекты
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Более 500 реализованных объектов по всей России
               </p>
             </div>
             <div className="grid md:grid-cols-2 gap-8">
               {portfolio.map((project, index) => (
-                <Card
-                  key={index}
-                  className="overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
-                >
-                  <div className="h-64 bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center">
-                    <Icon name="Image" size={64} className="text-muted-foreground/30" />
+                <Card key={index} className="group overflow-hidden hover:shadow-2xl transition-all duration-500 border-0">
+                  <div className="relative h-96 bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Icon name="Image" size={80} className="text-gray-400/50" />
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
-                  <div className="p-6">
-                    <div className="text-sm font-medium text-secondary mb-2">{project.category}</div>
-                    <h3 className="text-2xl font-montserrat font-bold text-primary mb-2">{project.title}</h3>
-                    <p className="text-muted-foreground">{project.description}</p>
+                  <div className="p-8 bg-white">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm font-medium">
+                        {project.type}
+                      </div>
+                      <div className="text-sm text-muted-foreground">{project.area}</div>
+                    </div>
+                    <h3 className="text-2xl font-montserrat font-bold text-primary mb-2">{project.style}</h3>
+                    <p className="text-muted-foreground flex items-center gap-2">
+                      <Icon name="MapPin" size={16} />
+                      {project.location}
+                    </p>
                   </div>
                 </Card>
               ))}
@@ -262,51 +360,60 @@ const Index = () => {
           </div>
         </section>
 
-        <section id="team" className="py-24 bg-white">
+        <section id="stages" className="py-32 bg-white">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-5xl font-montserrat font-bold text-primary mb-4">Наша команда</h2>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Профессионалы своего дела с многолетним опытом
+            <div className="max-w-3xl mb-20">
+              <h2 className="text-5xl md:text-6xl font-montserrat font-bold text-primary mb-6">
+                Этапы работы
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Прозрачный процесс от первого звонка до сдачи объекта
               </p>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {team.map((member, index) => (
-                <Card key={index} className="text-center p-8 hover:shadow-xl transition-shadow">
-                  <div className="w-24 h-24 bg-gradient-to-br from-secondary to-accent rounded-full mx-auto mb-6 flex items-center justify-center">
-                    <Icon name="User" size={40} className="text-white" />
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {stages.map((stage, index) => (
+                <div key={index} className="relative">
+                  <div className="flex items-start gap-6 mb-6">
+                    <div className="text-5xl font-montserrat font-bold text-secondary/20 flex-shrink-0">
+                      {stage.number}
+                    </div>
+                    <div className="pt-2">
+                      <div className="text-sm font-medium text-secondary mb-2">{stage.duration}</div>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-montserrat font-bold text-primary mb-2">{member.name}</h3>
-                  <p className="text-secondary font-medium mb-2">{member.role}</p>
-                  <p className="text-sm text-muted-foreground">{member.experience}</p>
-                </Card>
+                  <h3 className="text-2xl font-montserrat font-bold text-primary mb-4">{stage.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">{stage.description}</p>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        <section id="reviews" className="py-24 bg-muted/30">
+        <section id="reviews" className="py-32 bg-gray-50">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-5xl font-montserrat font-bold text-primary mb-4">Отзывы клиентов</h2>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <div className="max-w-3xl mb-20">
+              <h2 className="text-5xl md:text-6xl font-montserrat font-bold text-primary mb-6">
+                Отзывы клиентов
+              </h2>
+              <p className="text-xl text-muted-foreground">
                 Что говорят о нас наши клиенты
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-8">
               {reviews.map((review, index) => (
-                <Card key={index} className="p-8 hover:shadow-xl transition-shadow">
-                  <div className="flex gap-1 mb-4">
+                <Card key={index} className="p-8 bg-white border-0 shadow-lg">
+                  <div className="flex gap-1 mb-6">
                     {[...Array(review.rating)].map((_, i) => (
-                      <Icon key={i} name="Star" size={20} className="text-accent fill-accent" />
+                      <Icon key={i} name="Star" size={20} className="text-secondary fill-secondary" />
                     ))}
                   </div>
                   <p className="text-muted-foreground mb-6 leading-relaxed">{review.text}</p>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-secondary to-accent rounded-full flex items-center justify-center">
-                      <Icon name="User" size={20} className="text-white" />
+                  <div className="flex items-center justify-between pt-6 border-t">
+                    <div>
+                      <div className="font-bold text-primary">{review.name}</div>
+                      <div className="text-sm text-muted-foreground">{review.project}</div>
                     </div>
-                    <div className="font-medium text-primary">{review.name}</div>
+                    <div className="text-xs text-muted-foreground">{review.date}</div>
                   </div>
                 </Card>
               ))}
@@ -314,183 +421,153 @@ const Index = () => {
           </div>
         </section>
 
-        <section id="calculator" className="py-24 bg-gradient-to-br from-primary to-secondary/30">
+        <section id="contacts" className="py-32 bg-white">
           <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-5xl font-montserrat font-bold text-white mb-4">Калькулятор стоимости</h2>
-                <p className="text-xl text-white/90">
-                  Узнайте примерную стоимость ремонта за 30 секунд
+            <div className="grid lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
+              <div>
+                <h2 className="text-5xl md:text-6xl font-montserrat font-bold text-primary mb-6">
+                  Начнём ваш проект?
+                </h2>
+                <p className="text-xl text-muted-foreground mb-12">
+                  Оставьте заявку, и мы свяжемся с вами в течение 15 минут для бесплатной консультации
                 </p>
-              </div>
-              <Card className="p-8 md:p-12">
-                <div className="space-y-8">
-                  <div>
-                    <Label className="text-lg font-medium mb-4 block">Тип отделки</Label>
-                    <Select value={serviceType} onValueChange={setServiceType}>
-                      <SelectTrigger className="h-12 text-lg">
-                        <SelectValue placeholder="Выберите тип отделки" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="basic">Базовая отделка</SelectItem>
-                        <SelectItem value="standard">Стандартная отделка</SelectItem>
-                        <SelectItem value="premium">Премиум отделка</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label className="text-lg font-medium mb-4 block">
-                      Площадь помещения: <span className="text-secondary font-bold">{area[0]} м²</span>
-                    </Label>
-                    <Slider
-                      value={area}
-                      onValueChange={setArea}
-                      min={20}
-                      max={300}
-                      step={5}
-                      className="py-4"
-                    />
-                    <div className="flex justify-between text-sm text-muted-foreground mt-2">
-                      <span>20 м²</span>
-                      <span>300 м²</span>
-                    </div>
-                  </div>
-                  {serviceType && (
-                    <div className="bg-secondary/10 rounded-xl p-8 text-center animate-scale-in">
-                      <div className="text-sm text-muted-foreground mb-2">Примерная стоимость:</div>
-                      <div className="text-5xl font-montserrat font-bold text-secondary mb-2">
-                        {calculatePrice().toLocaleString('ru-RU')} ₽
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        {(calculatePrice() / area[0]).toLocaleString('ru-RU')} ₽ за м²
-                      </div>
-                    </div>
-                  )}
-                  <Button
-                    size="lg"
-                    className="w-full bg-accent hover:bg-accent/90 text-accent-foreground text-lg py-6"
-                    onClick={() => scrollToSection('contacts')}
-                  >
-                    Получить точный расчет
-                    <Icon name="ArrowRight" size={20} className="ml-2" />
-                  </Button>
-                </div>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        <section id="contacts" className="py-24 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-5xl font-montserrat font-bold text-primary mb-4">Контакты</h2>
-                <p className="text-xl text-muted-foreground">
-                  Свяжитесь с нами удобным способом
-                </p>
-              </div>
-              <div className="grid md:grid-cols-2 gap-12">
                 <div className="space-y-6">
-                  <Card className="p-6 hover:shadow-lg transition-shadow">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Icon name="Phone" size={24} className="text-secondary" />
-                      </div>
-                      <div>
-                        <div className="font-medium text-primary mb-1">Телефон</div>
-                        <a href="tel:+74951234567" className="text-lg text-secondary hover:underline">
-                          +7 (495) 123-45-67
-                        </a>
-                      </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Icon name="Phone" size={24} className="text-secondary" />
                     </div>
-                  </Card>
-                  <Card className="p-6 hover:shadow-lg transition-shadow">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Icon name="Mail" size={24} className="text-secondary" />
-                      </div>
-                      <div>
-                        <div className="font-medium text-primary mb-1">Email</div>
-                        <a href="mailto:info@mv-remont.ru" className="text-lg text-secondary hover:underline">
-                          info@mv-remont.ru
-                        </a>
-                      </div>
+                    <div>
+                      <div className="font-medium text-primary mb-1">Телефон</div>
+                      <a href="tel:+74951234567" className="text-xl text-secondary hover:underline font-semibold">
+                        +7 (495) 123-45-67
+                      </a>
                     </div>
-                  </Card>
-                  <Card className="p-6 hover:shadow-lg transition-shadow">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Icon name="MapPin" size={24} className="text-secondary" />
-                      </div>
-                      <div>
-                        <div className="font-medium text-primary mb-1">Адрес</div>
-                        <p className="text-muted-foreground">г. Москва, ул. Примерная, д. 1</p>
-                      </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Icon name="Mail" size={24} className="text-secondary" />
                     </div>
-                  </Card>
+                    <div>
+                      <div className="font-medium text-primary mb-1">Email</div>
+                      <a href="mailto:info@mv-remont.ru" className="text-xl text-secondary hover:underline">
+                        info@mv-remont.ru
+                      </a>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Icon name="MapPin" size={24} className="text-secondary" />
+                    </div>
+                    <div>
+                      <div className="font-medium text-primary mb-1">Адрес</div>
+                      <p className="text-muted-foreground">г. Москва, ул. Примерная, д. 1</p>
+                    </div>
+                  </div>
                 </div>
-                <Card className="p-8">
-                  <h3 className="text-2xl font-montserrat font-bold text-primary mb-6">Оставьте заявку</h3>
-                  <form className="space-y-4">
-                    <div>
-                      <Label htmlFor="name">Ваше имя</Label>
-                      <Input id="name" placeholder="Иван Иванов" className="mt-2" />
-                    </div>
-                    <div>
-                      <Label htmlFor="phone">Телефон</Label>
-                      <Input id="phone" placeholder="+7 (___) ___-__-__" className="mt-2" />
-                    </div>
-                    <div>
-                      <Label htmlFor="message">Сообщение</Label>
-                      <Textarea id="message" placeholder="Расскажите о вашем проекте..." className="mt-2" rows={4} />
-                    </div>
-                    <Button className="w-full bg-secondary hover:bg-secondary/90 text-white">
-                      Отправить заявку
-                      <Icon name="Send" size={18} className="ml-2" />
-                    </Button>
-                  </form>
-                </Card>
               </div>
+              <Card className="p-10 shadow-2xl border-0 bg-gray-50">
+                <h3 className="text-3xl font-montserrat font-bold text-primary mb-8">Заказать звонок</h3>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div>
+                    <Label htmlFor="name" className="text-base">Ваше имя *</Label>
+                    <Input 
+                      id="name" 
+                      required
+                      placeholder="Иван Иванов" 
+                      className="mt-2 h-12 bg-white" 
+                      value={formData.name}
+                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="phone" className="text-base">Телефон *</Label>
+                    <Input 
+                      id="phone" 
+                      required
+                      type="tel"
+                      placeholder="+7 (___) ___-__-__" 
+                      className="mt-2 h-12 bg-white" 
+                      value={formData.phone}
+                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="area" className="text-base">Площадь помещения, м²</Label>
+                    <Input 
+                      id="area" 
+                      type="number"
+                      placeholder="85" 
+                      className="mt-2 h-12 bg-white" 
+                      value={formData.area}
+                      onChange={(e) => setFormData({...formData, area: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="message" className="text-base">Комментарий</Label>
+                    <Textarea 
+                      id="message" 
+                      placeholder="Расскажите о вашем проекте..." 
+                      className="mt-2 bg-white" 
+                      rows={4}
+                      value={formData.message}
+                      onChange={(e) => setFormData({...formData, message: e.target.value})}
+                    />
+                  </div>
+                  <Button type="submit" className="w-full bg-secondary hover:bg-secondary/90 h-12 text-base">
+                    Отправить заявку
+                    <Icon name="Send" size={18} className="ml-2" />
+                  </Button>
+                  <p className="text-sm text-muted-foreground text-center">
+                    Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+                  </p>
+                </form>
+              </Card>
             </div>
           </div>
         </section>
       </main>
 
-      <footer className="bg-primary text-primary-foreground py-12">
+      <footer className="bg-primary text-white py-16">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
+          <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <Icon name="Home" size={24} className="text-accent" />
-                <span className="text-xl font-montserrat font-bold">МВ-Ремонт</span>
-              </div>
-              <p className="text-primary-foreground/80">
-                Профессиональная отделка полного цикла. Качество, надежность, точные сроки.
+              <div className="text-2xl font-montserrat font-bold mb-4">МВ ГРУПП</div>
+              <p className="text-white/70">
+                Профессиональная отделка полного цикла с 2012 года
               </p>
             </div>
             <div>
-              <h4 className="font-montserrat font-bold mb-4">Быстрые ссылки</h4>
-              <div className="space-y-2">
-                {['Услуги', 'Портфолио', 'О команде', 'Отзывы', 'Контакты'].map((item) => (
-                  <div key={item}>
-                    <button className="text-primary-foreground/80 hover:text-accent transition-colors">
-                      {item}
-                    </button>
-                  </div>
-                ))}
+              <h4 className="font-montserrat font-bold mb-4">Услуги</h4>
+              <div className="space-y-2 text-white/70">
+                <div>Дизайн-проект</div>
+                <div>Ремонт под ключ</div>
+                <div>Черновая отделка</div>
+                <div>Чистовая отделка</div>
+              </div>
+            </div>
+            <div>
+              <h4 className="font-montserrat font-bold mb-4">Компания</h4>
+              <div className="space-y-2 text-white/70">
+                <div>О нас</div>
+                <div>Портфолио</div>
+                <div>Отзывы</div>
+                <div>Контакты</div>
               </div>
             </div>
             <div>
               <h4 className="font-montserrat font-bold mb-4">Режим работы</h4>
-              <div className="space-y-2 text-primary-foreground/80">
-                <p>Пн-Пт: 9:00 - 19:00</p>
-                <p>Сб: 10:00 - 16:00</p>
-                <p>Вс: выходной</p>
+              <div className="space-y-2 text-white/70">
+                <div>Пн-Пт: 9:00 - 20:00</div>
+                <div>Сб-Вс: 10:00 - 18:00</div>
               </div>
             </div>
           </div>
-          <div className="border-t border-primary-foreground/20 pt-8 text-center text-primary-foreground/60">
-            <p>&copy; 2024 МВ-Ремонт. Все права защищены.</p>
+          <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-white/60 text-sm">© 2024 МВ ГРУПП. Все права защищены</p>
+            <div className="flex gap-6 text-sm text-white/60">
+              <button className="hover:text-white transition-colors">Политика конфиденциальности</button>
+              <button className="hover:text-white transition-colors">Договор оферты</button>
+            </div>
           </div>
         </div>
       </footer>

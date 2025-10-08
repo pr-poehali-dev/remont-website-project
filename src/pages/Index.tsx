@@ -159,6 +159,37 @@ const Index = () => {
     },
   ];
 
+  const team = [
+    {
+      name: 'Максим Воронов',
+      position: 'Основатель и главный архитектор',
+      experience: '15 лет',
+      projects: '200+',
+      description: 'Создаю концепции интерьеров, которые меняют жизнь людей к лучшему',
+    },
+    {
+      name: 'Елена Соколова',
+      position: 'Главный дизайнер',
+      experience: '12 лет',
+      projects: '180+',
+      description: 'Специализируюсь на неоклассике и современной классике',
+    },
+    {
+      name: 'Андрей Кузнецов',
+      position: 'Прораб',
+      experience: '18 лет',
+      projects: '300+',
+      description: 'Контролирую качество и сроки на каждом объекте',
+    },
+    {
+      name: 'Ольга Михайлова',
+      position: 'Менеджер проектов',
+      experience: '8 лет',
+      projects: '150+',
+      description: 'Веду коммуникацию с клиентами и координирую все этапы',
+    },
+  ];
+
   const reviews = [
     {
       name: 'Екатерина Смирнова',
@@ -200,6 +231,9 @@ const Index = () => {
               </button>
               <button onClick={() => scrollToSection('stages')} className="text-sm font-medium hover:text-secondary transition-colors">
                 Процесс
+              </button>
+              <button onClick={() => scrollToSection('team')} className="text-sm font-medium hover:text-secondary transition-colors">
+                Команда
               </button>
               <button onClick={() => scrollToSection('reviews')} className="text-sm font-medium hover:text-secondary transition-colors">
                 Отзывы
@@ -418,7 +452,43 @@ const Index = () => {
           </div>
         </section>
 
-        <section id="reviews" className="py-32 bg-gray-50">
+        <section id="team" className="py-32 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mb-24">
+              <div className="text-sm font-semibold text-secondary mb-4 tracking-wider uppercase">Команда</div>
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-montserrat font-bold text-primary mb-8 tracking-tight">
+                Кто делает ваш ремонт
+              </h2>
+              <p className="text-xl text-muted-foreground font-light leading-relaxed">
+                Опытные профессионалы с общей экспертизой более 50 лет
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl">
+              {team.map((member, index) => (
+                <Card key={index} className="group p-8 bg-white border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 text-center">
+                  <div className="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-secondary/20 to-secondary/5 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                    <Icon name="User" size={64} className="text-secondary/60" />
+                  </div>
+                  <h3 className="text-xl font-montserrat font-bold text-primary mb-2">{member.name}</h3>
+                  <p className="text-sm text-secondary font-medium mb-6">{member.position}</p>
+                  <div className="flex justify-center gap-6 mb-6 pb-6 border-b border-gray-100">
+                    <div>
+                      <div className="text-2xl font-bold text-primary">{member.experience}</div>
+                      <div className="text-xs text-muted-foreground">опыта</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-secondary">{member.projects}</div>
+                      <div className="text-xs text-muted-foreground">проектов</div>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed font-light">{member.description}</p>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="reviews" className="py-32 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mb-24">
               <div className="text-sm font-semibold text-secondary mb-4 tracking-wider uppercase">Отзывы</div>
@@ -431,7 +501,7 @@ const Index = () => {
             </div>
             <div className="grid md:grid-cols-3 gap-8 max-w-7xl">
               {reviews.map((review, index) => (
-                <Card key={index} className="p-8 bg-white border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
+                <Card key={index} className="p-8 bg-gray-50 border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
                   <div className="flex gap-1.5 mb-6">
                     {[...Array(review.rating)].map((_, i) => (
                       <Icon key={i} name="Star" size={18} className="text-secondary fill-secondary" />
